@@ -1,0 +1,16 @@
+#Property of Not Real Engineering 
+#Copyright 2020 Not Real Engineering - All Rights Reserved You may not use, 
+#           distribute and modify this code without the written permission 
+#           from Not Real Engineering.
+
+# Step 1 Tessellation 
+$ neper -T -n 10 -id 4 -morpho "diameq:lognormal(1,0.1),sphericity:lognormal(0.145,0.03,1-x)" -reg 1 -format tess,ori -o Polycrystal_basic
+$ neper -V Polycrystal_basic.tess -datacellcol id -datacelltrs 0.5 -print Polycrystal_basic_image
+
+# Create "lamnormal" and "lamwidth" file
+
+# Step 2 Tessellation
+$ neper -T -n 10::from_morpho -id 4::1 -morpho "diameq:lognormal(1,0.1),sphericity:lognormal(0.145,0.03,1-x)::lamellar(w=file(lamwidth),v=file(lamnormal))" -reg 1 -sel 0.004 -format tess,ori -o Polycrystal_laminated
+$ neper -V Polycrystal_laminated.tess -datacellcol id -datacelltrs 0.5 -print Polycrystal_laminated_image
+$ neper -M Polycrystal_laminated.tess -order 2 -cl 0.045 -meshqualexpr Odis -meshqualmin 1
+$ neper -V Polycrystal_laminated.tess,Polycrystal_laminated.msh -dataelsetcol id -print Polycrystal_laminated_mesh_image
